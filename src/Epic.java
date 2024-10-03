@@ -1,20 +1,34 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Epic extends Task {
 
     private ArrayList<Integer> subTaskIds = new ArrayList<>();
 
-   public Epic(String nameTask, String description,Status status) {
-        super(nameTask, description, status);
+   public Epic(String nameTask, String description) {
+    super(nameTask,description,Status.NEW);
+    }
+
+    public void deleteSubTaskIdsById(int id) {
+       if (!subTaskIds.isEmpty()){
+           subTaskIds.remove(id);
+       } else {
+           System.out.println("Список пуст");
+       }
+   }
+
+    public void deleteAllSubTaskIds() {
+        subTaskIds.clear();
+    }
+
+    public void createSubTaskIds(SubTask subTask) {
+        subTaskIds.add(subTask.getId());
     }
 
     public ArrayList<Integer> getSubTaskIds() {
+       subTaskIds = new ArrayList<>();
         return subTaskIds;
-    }
-
-    public void setSubTaskIds(ArrayList<Integer> subTaskIds) {
-        this.subTaskIds = subTaskIds;
     }
 
     @Override
