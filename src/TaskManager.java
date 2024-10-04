@@ -44,9 +44,9 @@ public class TaskManager {
         if (subTasks.containsKey(subTask.getId())) {
             if (subTasks.get(subTask.getId()).getEpicId() == subTask.getEpicId()) {
                 subTasks.put(subTask.getId(), subTask);
+                Epic epic = epics.get(subTask.getEpicId());
+                updateStatusEpic(epic);
             }
-            Epic epic = epics.get(subTask.getEpicId());
-            updateStatusEpic(epic);
         } else {
             System.out.println("Такой подзадачи не найдено");
         }
@@ -54,15 +54,17 @@ public class TaskManager {
 
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
-          ArrayList<SubTask> subTaskNew = new ArrayList<>();
-          for (int i = 0; i < epic.getSubTaskIds().size(); i++)
-              subTaskNew.add(subTasks.get(epic.getSubTaskIds().get(i)));
-            epics.put(epic.getId(), epic);
+            Epic epicNew = epics.get(epic.getId());
+            epics.put(epic.getId(), epicNew);
             updateStatusEpic(epic);
         } else {
             System.out.println("Такого Эпика нет ");
-        }
+        } // Ирек, извини я совсем торможу(((
     }
+        /* for (Epic epicNew : epics.values()){
+             epics.put(epic.getId(),epicNew);
+             updateStatusEpic(epic);
+         */
 
     //----------------------показали все-------------------------------
     public ArrayList<Task> getAllTasks() {
@@ -70,18 +72,12 @@ public class TaskManager {
         for (Task task : tasks.values()) {
             taskAll.add(task);
         }
-        if (taskAll.isEmpty()) {
-            return null;
-        }
         return taskAll;
     }
     public ArrayList<SubTask> getAllSubTasks() {
         ArrayList<SubTask> subTaskAll = new ArrayList<>();
         for (SubTask subTask : subTasks.values()) {
             subTaskAll.add(subTask);
-        }
-        if(subTaskAll.isEmpty()){
-            return null;
         }
         return subTaskAll;
     }
@@ -91,31 +87,19 @@ public class TaskManager {
         for (Epic epic : epics.values()) {
             epicAll.add(epic);
         }
-        if(epicAll.isEmpty()){
-            return null;
-        }
         return epicAll;
     }
 
     //--------------------показали по одному-------------------
     public Task getTaskById(int id) {
-        if (!tasks.containsKey(id)) {
-            return null;
-        }
         return tasks.get(id);
     }
 
     public SubTask getSubTaskById(int id) {
-        if (!subTasks.containsKey(id)) {
-            return null;
-        }
         return subTasks.get(id);
     }
 
     public Epic getEpicById(int id) {
-        if (!epics.containsKey(id)) {
-            return null;
-        }
         return epics.get(id);
     }
 

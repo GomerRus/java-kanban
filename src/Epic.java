@@ -12,7 +12,8 @@ public class Epic extends Task {
 
     public void deleteSubTaskIdsById(int id) {
        if (!subTaskIds.isEmpty()){
-           subTaskIds.remove(id);
+           Integer iD = Integer.valueOf(id);
+           subTaskIds.remove(iD);
        } else {
            System.out.println("Список пуст");
        }
@@ -27,8 +28,8 @@ public class Epic extends Task {
     }
 
     public ArrayList<Integer> getSubTaskIds() {
-       subTaskIds = new ArrayList<>();
-        return subTaskIds;
+
+        return new ArrayList<>(subTaskIds);
     }
 
     @Override
