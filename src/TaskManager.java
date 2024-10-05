@@ -54,19 +54,16 @@ public class TaskManager {
 
     public void updateEpic(Epic epic) {
         if (epics.containsKey(epic.getId())) {
-            Epic epicNew = epics.get(epic.getId());
-            epics.put(epic.getId(), epicNew);
-            updateStatusEpic(epic);
+            Epic epicNew = epics.get(epic.getId()); // получили старый Epic по ID нового
+            epicNew.setNameTask(epic.getName()); // поменяли имя старого Epic-a
+            epicNew.setDescription(epic.getDescription()); // поменяли описание
+            // Ирек, я очень надеюсь что я сделал то что надо...
         } else {
             System.out.println("Такого Эпика нет ");
-        } // Ирек, извини я совсем торможу(((
+        }
     }
-        /* for (Epic epicNew : epics.values()){
-             epics.put(epic.getId(),epicNew);
-             updateStatusEpic(epic);
-         */
 
-    //----------------------показали все-------------------------------
+    //-----------------показали все----------------------
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> taskAll = new ArrayList<>();
         for (Task task : tasks.values()) {

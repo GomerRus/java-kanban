@@ -10,7 +10,7 @@ public class Main {
   taskManager.createEpic(new Epic("Epic-2", "Описание-2"));
   taskManager.createSubTask(new SubTask("SubTask-1", "Описание-1", Status.NEW, 3));
   taskManager.createSubTask(new SubTask("SubTask-2", "Описание-2", Status.NEW, 3));
-  taskManager.createSubTask(new SubTask("SubTask-1", "Описание-1", Status.NEW, 4));
+  taskManager.createSubTask(new SubTask("SubTask-3", "Описание-3", Status.NEW, 4));
 
   System.out.println("Выводим");
   taskManager.getAllTasks();
@@ -26,7 +26,14 @@ public class Main {
   taskManager.updateSubTask(subTask);
   System.out.println("Обновленная подзадача" + subTask);
   System.out.println("");
-  Epic epic = taskManager.getEpicById(3);
-  System.out.println("Достали Эпик по ID c изменившимся статусом " + epic);
+  Epic epic3 = taskManager.getEpicById(3);
+  System.out.println("Достали Эпик по ID c изменившимся статусом " + epic3);
+
+  epic3.setDescription("Описание ремонта");
+  epic3.setNameTask("Ремонт");
+  taskManager.updateEpic(epic3);
+  System.out.println("Обновленная подзадача" + epic3);
+
+
  }
 }
