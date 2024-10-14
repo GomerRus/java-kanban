@@ -1,16 +1,26 @@
+import manager.Managers;
+import manager.TaskManager;
+import status.Status;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
+
 public class Main {
 
  public static void main(String[] args) {
 
+
+
+
+/*TaskManager taskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
   System.out.println("Поехали!");
-  TaskManager taskManager = new TaskManager();
-  taskManager.createTask(new Task("Task-1", "Описание-1", Status.NEW));
-  taskManager.createTask(new Task("Task-2", "Описание-2", Status.NEW));
-  taskManager.createEpic(new Epic("Epic-1", "Описание-1"));
-  taskManager.createEpic(new Epic("Epic-2", "Описание-2"));
-  taskManager.createSubTask(new SubTask("SubTask-1", "Описание-1", Status.NEW, 3));
-  taskManager.createSubTask(new SubTask("SubTask-2", "Описание-2", Status.NEW, 3));
-  taskManager.createSubTask(new SubTask("SubTask-3", "Описание-3", Status.NEW, 4));
+  taskManager.createTask(new Task("tasks.tasks.Task-1", "Описание-1", Status.NEW));
+  taskManager.createTask(new Task("tasks.tasks.Task-2", "Описание-2", Status.NEW));
+  taskManager.createEpic(new Epic("tasks.tasks.Epic-1", "Описание-1"));
+  taskManager.createEpic(new Epic("tasks.tasks.Epic-2", "Описание-2"));
+  taskManager.createSubTask(new SubTask("tasks.tasks.SubTask-1", "Описание-1", Status.NEW, 3));
+  taskManager.createSubTask(new SubTask("tasks.tasks.SubTask-2", "Описание-2", Status.NEW, 3));
+  taskManager.createSubTask(new SubTask("tasks.tasks.SubTask-3", "Описание-3", Status.NEW, 4));
 
   System.out.println("Выводим");
   taskManager.getAllTasks();
@@ -34,6 +44,6 @@ public class Main {
   taskManager.updateEpic(epic3);
   System.out.println("Обновленная подзадача" + epic3);
 
-
+*/
  }
 }
