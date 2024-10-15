@@ -17,7 +17,7 @@ import java.util.List;
 
       @BeforeEach
       void beforeEach() {
-          taskManager = new InMemoryTaskManager(Managers.getDefaultHistory());
+          taskManager = new InMemoryTaskManager();
       }
 
       @Test

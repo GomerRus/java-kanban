@@ -12,7 +12,7 @@ public class Main {
 
 
 
-/*TaskManager taskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
+TaskManager taskManager = Managers.getInMemoryTaskManager(Managers.getDefaultHistory());
   System.out.println("Поехали!");
   taskManager.createTask(new Task("tasks.tasks.Task-1", "Описание-1", Status.NEW));
   taskManager.createTask(new Task("tasks.tasks.Task-2", "Описание-2", Status.NEW));
@@ -44,6 +44,6 @@ public class Main {
   taskManager.updateEpic(epic3);
   System.out.println("Обновленная подзадача" + epic3);
 
-*/
+
  }
 }
