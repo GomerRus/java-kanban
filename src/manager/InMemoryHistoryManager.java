@@ -9,11 +9,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> historyTasks = new ArrayList<>();
     @Override
     public void add(Task task) {
-        if (task != null) {
+        if (task != null && historyTasks.size() < LIMIT_HISTORY_TASKS) {
+            historyTasks.add(task);
             if (historyTasks.size() >= LIMIT_HISTORY_TASKS) {
                 historyTasks.remove(0);
-                historyTasks.add(task);
-            } else {
                 historyTasks.add(task);
             }
         } else {
@@ -22,6 +21,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
     @Override
     public List<Task> getHistory() {
-        return historyTasks;
+        return new ArrayList<>(historyTasks);
     }
 }

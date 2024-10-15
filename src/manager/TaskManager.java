@@ -15,9 +15,9 @@ public interface TaskManager {
     void updateSubTask(SubTask subTask);
     void updateEpic(Epic epic);
     //-----------------показали все----------------------
-    ArrayList<Task> getAllTasks();
-    ArrayList<SubTask> getAllSubTasks();
-    ArrayList<Epic> getAllEpics();
+    List<Task> getAllTasks();
+    List<SubTask> getAllSubTasks();
+    List<Epic> getAllEpics();
     //--------------------показали по одному-------------------
     Task getTaskById(int id);
     SubTask getSubTaskById(int id);
@@ -31,7 +31,7 @@ public interface TaskManager {
     void deleteSubTaskById(int id);
     void deleteEpicById(int id);
     //-------------------показали по Эпику----------------------
-    ArrayList<SubTask> getAllSubTaskByEpicId(int id);
+    List<SubTask> getAllSubTaskByEpicId(int id);
     //----------------------------Обновление статуса Эпика-----------
 }
 
