@@ -9,11 +9,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> historyTasks = new ArrayList<>();
     @Override
     public void add(Task task) {
-        if (task != null && historyTasks.size() < LIMIT_HISTORY_TASKS) {
+        if (task != null ) {
             historyTasks.add(task);
-            if (historyTasks.size() >= LIMIT_HISTORY_TASKS) {
+            if (historyTasks.size() > LIMIT_HISTORY_TASKS) {
                 historyTasks.remove(0);
-                historyTasks.add(task);
             }
         } else {
             System.out.println("Такой задачи нет");
