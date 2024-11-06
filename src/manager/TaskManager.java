@@ -2,7 +2,6 @@ package manager;
 import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
-import java.util.ArrayList;
 import java.util.List;
 public interface TaskManager {
     List<Task> getHistory ();

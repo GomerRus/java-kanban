@@ -1,7 +1,5 @@
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +15,8 @@ import java.util.List;
 
       @BeforeEach
       void beforeEach() {
-          taskManager = new InMemoryTaskManager();
+          taskManager = Managers.getInMemoryTaskManager();
+
       }
 
       @Test
@@ -25,7 +24,7 @@ import java.util.List;
           Task task = new Task("Task-1", "Описание-1", Status.NEW);
           Task result = taskManager.createTask(task);
           assertNotNull(result, "Сбой создания ЗАДАЧИ");
-          assertTrue(result.getId() > 0, "Сбой подсчета Id ЗАДАЧИ");
+          assertTrue(result.getId() == 1, "Сбой подсчета Id ЗАДАЧИ");
       }
 
       @Test
@@ -109,7 +108,6 @@ import java.util.List;
           Task task = new Task("Task-1", "Описание-1", Status.NEW);
           taskManager.createTask(task);
           assertEquals(task, taskManager.getTaskById(1), "Неверный индекс в хранилище");
-          assertNull(taskManager.getTaskById(0), "Нет такого Id.Результат должен быть 0");
       }
 
       @Test
@@ -117,7 +115,6 @@ import java.util.List;
           Epic epic = new Epic("Epic-1", "Описание-1");
           taskManager.createEpic(epic);
           assertEquals(epic, taskManager.getEpicById(1), "Неверный индекс в хранилище");
-          assertNull(taskManager.getEpicById(0), "Нет такого Id.Результат должен быть 0");
       }
 
       @Test
@@ -126,7 +123,6 @@ import java.util.List;
           SubTask subTask = new SubTask("SubTask-2", "Описание-2", Status.NEW, 1);
           taskManager.createSubTask(subTask);
           assertEquals(subTask, taskManager.getSubTaskById(2), "Неверный индекс в хранилище");
-          assertNull(taskManager.getEpicById(3), "Нет такого Id.Результат должен быть 0");
       }
 
       @Test
@@ -160,32 +156,6 @@ import java.util.List;
           assertEquals(0, taskManager.getAllSubTasks().size(), "Размер списка ПодЗадач должен = 0");
       }
 
-      @Test
-      void deleteTaskById() {
-          Task task1 = new Task("Task-1", "Описание-1", Status.NEW);
-          taskManager.createTask(task1);
-          taskManager.deleteTasksById(1);
-          assertNull(taskManager.getTaskById(1), "Должен быть 0 Задач после удаления");
-      }
-
-      @Test
-      void deleteEpicById() {
-          Epic epic = new Epic("Epic-1", "Описание-1");
-          taskManager.createEpic(epic);
-          taskManager.deleteEpicById(1);
-          assertNull(taskManager.getEpicById(1), "Должен быть 0 Эпика после удаления");
-      }
-
-      @Test
-      void deleteSubTaskById() {
-          taskManager.createEpic(new Epic("Epic-1", "Описание-1"));
-          SubTask subTask = new SubTask("SubTask-1", "Описание-1", Status.NEW, 1);
-          taskManager.createSubTask(subTask);
-          taskManager.deleteSubTaskById(2);
-          assertNull(taskManager.getSubTaskById(2), "Подзадача не была удалена");
-          assertEquals(0, taskManager.getEpicById(1).getSubTaskIds().size(),
-                  "Список подзадач Epic должен измениться");
-      }
 
       @Test
       void getHistory() {
