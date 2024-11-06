@@ -1,6 +1,7 @@
 package manager;
 
 import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             return history.get(id);
         }
     }
+
     private final CustomLinkedList list = new CustomLinkedList();
 
     @Override

@@ -8,13 +8,14 @@ import status.Status;
 import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
+
 import java.util.List;
 
 class HistoryManagerTest {
 
-   HistoryManager historyManager = Managers.getDefaultHistory();
- static Task task1, task2;
- static Epic epic1, epic2;
+    HistoryManager historyManager = Managers.getDefaultHistory();
+    static Task task1, task2;
+    static Epic epic1, epic2;
     static SubTask subTask1, subTask2;
     static int id = 0;
 
