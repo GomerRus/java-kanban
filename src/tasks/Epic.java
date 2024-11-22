@@ -2,7 +2,6 @@ package tasks;
 
 import status.Status;
 import status.TypeTasks;
-
 import java.util.ArrayList;
 import java.util.Objects;
 

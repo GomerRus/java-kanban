@@ -2,9 +2,6 @@ package tasks;
 
 import status.Status;
 import status.TypeTasks;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
