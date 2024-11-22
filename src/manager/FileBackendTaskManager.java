@@ -1,6 +1,5 @@
 package manager;
 
-
 import exceptions.ManagerSaveException;
 import status.Status;
 import status.TypeTasks;
