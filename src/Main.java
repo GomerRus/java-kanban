@@ -1,3 +1,4 @@
+import manager.FileBackendTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import status.Status;
@@ -5,10 +6,35 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
+import java.nio.file.Path;
+
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager manager = Managers.getInMemoryTaskManager();
+
+        FileBackendTaskManager fb = new FileBackendTaskManager();
+        Task task1 = new Task("Доработать приложение", "Манагер", Status.NEW);
+        Task task2 = new Task("Пробежать марафон", "Пушкин-Питер", Status.NEW);
+        fb.createTask(task1);
+        fb.createTask(task2);
+        Epic epic1 = new Epic("Понедельник", "!!!");
+        SubTask subTask1 = new SubTask("Нал", "Позвонить ", Status.NEW, epic1.getId());
+        SubTask subTask = new SubTask("Налоги", "Позвонить бухгалтеру", Status.NEW, epic1.getId());
+        fb.createEpic(epic1);
+        fb.createSubTask(subTask);
+        fb.createSubTask(subTask1);
+        fb.save();
+        System.out.println(fb.getAllTasks());
+        System.out.println(fb.getAllEpics());
+        System.out.println(fb.getAllSubTasks());
+        System.out.println("-------");
+
+      /*  FileBackendTaskManager.loadFromFile(Path.of("src", "saved_information", "savedTasks.csv"));
+        System.out.println(fb.getAllTasks());
+        System.out.println(fb.getAllEpics());
+        System.out.println(fb.getAllSubTasks());*/
+
+      /*  TaskManager manager = Managers.getInMemoryTaskManager();
 
         Task task1 = new Task("Доработать приложение", "Манагер", Status.NEW);
         manager.createTask(task1);
@@ -21,8 +47,10 @@ public class Main {
         SubTask subTask = new SubTask("Налоги", "Позвонить бухгалтеру", Status.NEW, epic.getId());
         System.out.println(manager.createSubTask(subTask));
 
-        System.out.println(manager.getTaskById(task1.getId()));
-        System.out.println(manager.getTaskById(task2.getId()));
+
+        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllEpics());
+        System.out.println(manager.getAllSubTasks());*/
 
     }
 }

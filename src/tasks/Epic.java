@@ -1,6 +1,7 @@
 package tasks;
 
 import status.Status;
+import status.TypeTasks;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,8 +9,9 @@ import java.util.Objects;
 public class Epic extends Task {
     private ArrayList<Integer> subTaskIds = new ArrayList<>();
 
-    public Epic(String nameTask, String description) {
-        super(nameTask, description, Status.NEW);
+    public Epic(String name, String description) {
+        super(name, description, Status.NEW);
+        this.typeTasks = TypeTasks.EPIC;
     }
 
     public void deleteSubTaskIdsById(int id) {
@@ -49,12 +51,14 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "tasks.tasks.Epic{" +
-                "subtaskIds=" + subTaskIds +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", status=" + getStatus() +
-                '}';
+        if (subTaskIds.isEmpty()) {
+            return super.toString();
+        } else {
+            return super.toString() +
+                    " id подзадач=" + subTaskIds +
+                    "}";
+        }
     }
 }
+
+

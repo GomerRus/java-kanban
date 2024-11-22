@@ -1,5 +1,6 @@
 package manager;
 
+import status.TypeTasks;
 import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
@@ -15,7 +16,6 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private int nextId = 0;
     private HistoryManager historyManager = Managers.getDefaultHistory();
-
 
     @Override
     public List<Task> getHistory() {
