@@ -23,7 +23,7 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
     public FileBackendTaskManager() {
     }
 
-    public static Task fromString(String value) {
+    private static Task fromString(String value) {
         String[] str = value.split(",");
         int id = Integer.parseInt(str[0]);
         TypeTasks type = TypeTasks.valueOf(str[1]);
@@ -38,7 +38,7 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
         }
         switch (type) {
             case TASK -> {
-                return new Task(name, description, status);
+                return new Task(id, name, description, status);
             }
             case EPIC -> {
                 Epic epic = new Epic(name, description);
@@ -47,15 +47,15 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
                 return epic;
             }
             case SUBTASK -> {
-                return new SubTask(name, description, status, epicId);
+                return new SubTask(id, name, description, status, epicId);
             }
             default -> {
-                return null;
+                throw new ManagerSaveException("Неизвестный тип задач" + type);
             }
         }
     }
 
-    public void save() {
+    private void save() {
         try (BufferedWriter bw = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             bw.write(HEAD + "\n");
             for (Task task : getAllTasks()) {
@@ -80,21 +80,16 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
             while (br.ready()) {
                 String line = br.readLine();
                 Task task = fromString(line);
-                assert task != null;
                 int id = task.getId();
-                switch (task.getTypeTasks()) {
-                    case TASK:
-                        fb.createTask(task);
-                        break;
-                    case EPIC:
-                        fb.createEpic((Epic) task);
-                        break;
-                    case SUBTASK:
-                        fb.createSubTask((SubTask) task);
-                        break;
-                }
+                fb.setNextId(id);
+                fb.setTasks(task);
                 if (id > maxId) {
                     maxId = id;
+                }
+                for (Task subTask : fb.getAllSubTaskByEpicId(id)) {
+                    SubTask newSubTask = (SubTask) subTask;
+                    Epic epic = (Epic) subTask;
+                    epic.createSubTaskIds(newSubTask);
                 }
             }
         } catch (IOException exp) {

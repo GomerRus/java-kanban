@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBakendTaskManagerTest {
@@ -24,20 +25,17 @@ class FileBakendTaskManagerTest {
     void createTask() {
         task = new Task("Task-1", "Описание-1", Status.NEW);
         epic = new Epic("Epic-1", "Описание-1");
+        SubTask subTask1 = new SubTask("SubTask-1", "Описание-1", Status.NEW, epic.getId());
+        SubTask subTask2 = new SubTask("SubTask-2", "Описание-2", Status.NEW, epic.getId());
         fb.createTask(task);
         fb.createEpic(epic);
+        fb.createSubTask(subTask1);
+        fb.createSubTask(subTask2);
 
     }
 
     @Test
     void createFileTest() throws IOException {
-        try {
-            Files.delete(path);
-        } catch (IOException exp) {
-            throw new RuntimeException(exp);
-        }
-        fb.save();
-        assertTrue(Files.exists(path));
         String HEAD = "id,type,name,status,description,epicId";
         String[] strTasks = Files.readString(path, StandardCharsets.UTF_8).split("\n");
         assertEquals(strTasks[0], HEAD, "Заголовок не соответствует");
@@ -45,10 +43,10 @@ class FileBakendTaskManagerTest {
 
     @Test
     void loadFromFileTest() {
-        fb.save();
         FileBackendTaskManager newFb = FileBackendTaskManager.loadFromFile(path);
         assertArrayEquals(fb.getAllTasks().toArray(), newFb.getAllTasks().toArray(), "Таски не равны");
         assertArrayEquals(fb.getAllEpics().toArray(), newFb.getAllEpics().toArray(), "Эпики не равны");
+        assertArrayEquals(fb.getAllSubTasks().toArray(), newFb.getAllSubTasks().toArray(), "СабТаски не равны");
     }
 }
 

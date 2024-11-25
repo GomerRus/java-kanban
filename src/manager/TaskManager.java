@@ -1,5 +1,6 @@
 package manager;
 
+import status.TypeTasks;
 import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
@@ -7,6 +8,9 @@ import tasks.SubTask;
 import java.util.List;
 
 public interface TaskManager {
+    void setNextId(int nextId);
+
+    int getNextId();
 
     List<Task> getHistory();
 

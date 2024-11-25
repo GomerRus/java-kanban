@@ -8,6 +8,12 @@ import java.util.Objects;
 public class SubTask extends Task {
     private int epicId;
 
+    public SubTask(int id, String nameTask, String description, Status status, int epicId) {
+        super(id, nameTask, description, status);
+        this.epicId = epicId;
+        this.typeTasks = TypeTasks.SUBTASK;
+    }
+
     public SubTask(String nameTask, String description, Status status, int epicId) {
         super(nameTask, description, status);
         this.epicId = epicId;
