@@ -81,17 +81,12 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
                 String line = br.readLine();
                 Task task = fromString(line);
                 int id = task.getId();
-                fb.setNextId(id);
                 fb.setTasks(task);
                 if (id > maxId) {
                     maxId = id;
                 }
-                for (Task subTask : fb.getAllSubTaskByEpicId(id)) {
-                    SubTask newSubTask = (SubTask) subTask;
-                    Epic epic = (Epic) subTask;
-                    epic.createSubTaskIds(newSubTask);
-                }
             }
+            fb.setNextId(maxId);
         } catch (IOException exp) {
             throw new ManagerSaveException("Восстановить данные НЕ УДАЛОСЬ");
         }

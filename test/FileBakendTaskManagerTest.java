@@ -25,8 +25,8 @@ class FileBakendTaskManagerTest {
     void createTask() {
         task = new Task("Task-1", "Описание-1", Status.NEW);
         epic = new Epic("Epic-1", "Описание-1");
-        SubTask subTask1 = new SubTask("SubTask-1", "Описание-1", Status.NEW, epic.getId());
-        SubTask subTask2 = new SubTask("SubTask-2", "Описание-2", Status.NEW, epic.getId());
+        subTask1 = new SubTask("SubTask-1", "Описание-1", Status.NEW, 2);
+        subTask2 = new SubTask("SubTask-2", "Описание-2", Status.NEW, 2);
         fb.createTask(task);
         fb.createEpic(epic);
         fb.createSubTask(subTask1);

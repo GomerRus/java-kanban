@@ -7,9 +7,6 @@ import tasks.SubTask;
 import java.util.List;
 
 public interface TaskManager {
-    void setNextId(int nextId);
-
-    int getNextId();
 
     List<Task> getHistory();
 

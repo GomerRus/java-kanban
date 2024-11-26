@@ -16,21 +16,22 @@ public class InMemoryTaskManager implements TaskManager {
     private int nextId = 0;
     private HistoryManager historyManager = Managers.getDefaultHistory();
 
-    @Override
-    public void setNextId(int nextId) {
+    protected void setNextId(int nextId) {
         this.nextId = nextId;
     }
 
-    @Override
-    public int getNextId() {
+    private int getNextId() {
         return nextId++;
     }
 
     protected void setTasks(Task task) {
-        task.setId(getNextId());
         switch (task.getTypeTasks()) {
             case TASK -> tasks.put(task.getId(), task);
-            case SUBTASK -> subTasks.put(task.getId(), (SubTask) task);
+            case SUBTASK -> {
+                subTasks.put(task.getId(), (SubTask) task);
+                Epic epic = epics.get(((SubTask) task).getEpicId());
+                epic.createSubTaskIds((SubTask) task);
+            }
             case EPIC -> epics.put(task.getId(), (Epic) task);
         }
     }

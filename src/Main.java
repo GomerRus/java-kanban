@@ -16,14 +16,15 @@ public class Main {
         fb.createTask(task1);
         fb.createTask(task2);
         Epic epic1 = new Epic("Понедельник", "!!!");
-        SubTask subTask1 = new SubTask(4, "Нал", "Позвонить ", Status.NEW, epic1.getId());
-        SubTask subTask = new SubTask(5, "Налоги", "Позвонить бухгалтеру", Status.NEW, epic1.getId());
-        fb.createEpic(epic1);
-        fb.createSubTask(subTask);
-        fb.createSubTask(subTask1);
+        SubTask subTask1 = new SubTask(4, "Нал", "Позвонить ", Status.NEW, 3);
+        SubTask subTask = new SubTask(5, "Налоги", "Позвонить бухгалтеру", Status.NEW, 3);
+        System.out.println(fb.createEpic(epic1));
+        System.out.println(fb.createSubTask(subTask));
+        System.out.println(fb.createSubTask(subTask1));
+        System.out.println("-------");
         System.out.println(fb.getAllTasks());
         System.out.println(fb.getAllEpics());
-        System.out.println(fb.getAllSubTasks());
+        System.out.println(fb.getAllSubTaskByEpicId(epic1.getId()));
         System.out.println("-------");
 
         FileBackendTaskManager.loadFromFile(Path.of("src", "saved_information", "savedTasks.csv"));
