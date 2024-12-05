@@ -1,6 +1,7 @@
 package tasks;
 
 import status.Status;
+import status.TypeTasks;
 
 import java.util.Objects;
 
@@ -9,11 +10,26 @@ public class Task {
     private String name;
     private Status status;
     private String description;
+    protected TypeTasks typeTasks;
+
+    public Task(int id, String name, String description, Status status) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.description = description;
+        this.typeTasks = TypeTasks.TASK;
+    }
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.status = status;
         this.description = description;
+        this.typeTasks = TypeTasks.TASK;
+    }
+
+
+    public TypeTasks getTypeTasks() {
+        return typeTasks;
     }
 
     public int getId() {
@@ -53,21 +69,25 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return getId() == task.getId() && Objects.equals(getName(), task.getName()) && getStatus() == task.getStatus() && Objects.equals(getDescription(), task.getDescription());
+        return getId() == task.getId() && Objects.equals(getName(), task.getName()) && getStatus() == task.getStatus() && Objects.equals(getDescription(), task.getDescription()) && getTypeTasks() == task.getTypeTasks();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, status, description);
+        return Objects.hash(getId(), getName(), getStatus(), getDescription(), getTypeTasks());
     }
 
     @Override
     public String toString() {
-        return "tasks.tasks.Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", description='" + description + '\'' +
+        return this.getClass().getSimpleName() + '{' +
+                "название='" + name + '\'' +
+                ", описание='" + description + '\'' +
+                ", id=" + id + '\'' +
+                ", статус=" + status +
                 '}';
+    }
+
+    public String toStringCsv() {
+        return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(), description);
     }
 }

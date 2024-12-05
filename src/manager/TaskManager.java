@@ -7,6 +7,7 @@ import tasks.SubTask;
 import java.util.List;
 
 public interface TaskManager {
+
     List<Task> getHistory();
 
     // --------------------создали------------------------------

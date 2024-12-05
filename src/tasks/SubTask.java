@@ -1,15 +1,23 @@
 package tasks;
 
 import status.Status;
+import status.TypeTasks;
 
 import java.util.Objects;
 
 public class SubTask extends Task {
     private int epicId;
 
+    public SubTask(int id, String nameTask, String description, Status status, int epicId) {
+        super(id, nameTask, description, status);
+        this.epicId = epicId;
+        this.typeTasks = TypeTasks.SUBTASK;
+    }
+
     public SubTask(String nameTask, String description, Status status, int epicId) {
         super(nameTask, description, status);
         this.epicId = epicId;
+        this.typeTasks = TypeTasks.SUBTASK;
     }
 
     public int getEpicId() {
@@ -32,12 +40,13 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "tasks.tasks.SubTask{" +
-                "epicId=" + getEpicId() +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", status=" + getStatus() +
-                '}';
+        return super.toString() +
+                " epicId=" + epicId +
+                "}";
+    }
+
+    @Override
+    public String toStringCsv() {
+        return super.toStringCsv().concat(',' + String.valueOf(epicId));
     }
 }
