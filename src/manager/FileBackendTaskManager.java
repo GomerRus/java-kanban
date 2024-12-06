@@ -11,10 +11,12 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackendTaskManager extends InMemoryTaskManager implements TaskManager {
     private Path path = Path.of("src", "saved_information", "savedTasks.csv");
-    private static final String HEAD = "id,type,name,status,description,epicId";
+    private static final String HEAD = "id,type,name,status,description,duration,startTime,epicId";
 
     public FileBackendTaskManager(Path path) {
         this.path = path;
@@ -31,26 +33,53 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
         Status status = Status.valueOf(str[3]);
         String description = str[4];
         int epicId;
-        if (str.length > 5) {
-            epicId = Integer.parseInt(str[5]);
+        if (str.length < 7) {
+            if (str.length > 5) {
+                epicId = Integer.parseInt(str[5]);
+            } else {
+                epicId = 0;
+            }
+            switch (type) {
+                case TASK -> {
+                    return new Task(id, name, description, status);
+                }
+                case EPIC -> {
+                    Epic epic = new Epic(name, description);
+                    epic.setStatus(status);
+                    epic.setId(id);
+                    return epic;
+                }
+                case SUBTASK -> {
+                    return new SubTask(id, name, description, status, epicId);
+                }
+                default -> {
+                    throw new ManagerSaveException("Неизвестный тип задач" + type);
+                }
+            }
         } else {
-            epicId = 0;
-        }
-        switch (type) {
-            case TASK -> {
-                return new Task(id, name, description, status);
+            LocalDateTime startTime = LocalDateTime.parse(str[5]);
+            Duration duration = Duration.parse(str[6]);
+            if (str.length > 7) {
+                epicId = Integer.parseInt(str[7]);
+            } else {
+                epicId = 0;
             }
-            case EPIC -> {
-                Epic epic = new Epic(name, description);
-                epic.setStatus(status);
-                epic.setId(id);
-                return epic;
-            }
-            case SUBTASK -> {
-                return new SubTask(id, name, description, status, epicId);
-            }
-            default -> {
-                throw new ManagerSaveException("Неизвестный тип задач" + type);
+            switch (type) {
+                case TASK -> {
+                    return new Task(id, name, description, status, duration, startTime);
+                }
+                case EPIC -> {
+                    Epic epic = new Epic(name, description);
+                    epic.setStatus(status);
+                    epic.setId(id);
+                    return epic;
+                }
+                case SUBTASK -> {
+                    return new SubTask(id, name, description, status, duration, startTime, epicId);
+                }
+                default -> {
+                    throw new ManagerSaveException("Неизвестный тип задач" + type);
+                }
             }
         }
     }

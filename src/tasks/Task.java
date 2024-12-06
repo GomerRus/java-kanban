@@ -3,6 +3,8 @@ package tasks;
 import status.Status;
 import status.TypeTasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -11,6 +13,8 @@ public class Task {
     private Status status;
     private String description;
     protected TypeTasks typeTasks;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(int id, String name, String description, Status status) {
         this.id = id;
@@ -27,6 +31,35 @@ public class Task {
         this.typeTasks = TypeTasks.TASK;
     }
 
+    public Task(int id, String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.description = description;
+        this.typeTasks = TypeTasks.TASK;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 
     public TypeTasks getTypeTasks() {
         return typeTasks;
@@ -67,27 +100,40 @@ public class Task {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return getId() == task.getId() && Objects.equals(getName(), task.getName()) && getStatus() == task.getStatus() && Objects.equals(getDescription(), task.getDescription()) && getTypeTasks() == task.getTypeTasks();
+        if (!(o instanceof Task task)) return false;
+        return getId() == task.getId() && Objects.equals(getName(),
+                task.getName()) && getStatus() == task.getStatus() && Objects.equals(getDescription(),
+                task.getDescription()) && getTypeTasks() == task.getTypeTasks() && Objects.equals(getDuration(),
+                task.getDuration()) && Objects.equals(getStartTime(), task.getStartTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getStatus(), getDescription(), getTypeTasks());
+        return Objects.hash(getId(), getName(), getStatus(), getDescription(), getTypeTasks(),
+                getDuration(), getStartTime());
     }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + '{' +
-                "название='" + name + '\'' +
-                ", описание='" + description + '\'' +
-                ", id=" + id + '\'' +
-                ", статус=" + status +
+        return "Task{" +
+                "description='" + description + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", typeTasks=" + typeTasks +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}';
     }
 
     public String toStringCsv() {
-        return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(), description);
+        if (startTime != null) {
+            return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(),
+                    description, duration.toString(), startTime.toString());
+        } else {
+            return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(),
+                    description);
+        }
     }
 }
+
