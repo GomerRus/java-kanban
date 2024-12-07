@@ -10,10 +10,16 @@ import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 class InMemoryTaskManagerTest {
     protected TaskManager taskManager;
+    Task task;
+    SubTask subTask;
+    SubTask subTask2;
+    Epic epic;
 
     @BeforeEach
     void beforeEach() {
@@ -48,8 +54,8 @@ class InMemoryTaskManagerTest {
 
     @Test
     void createSubTaskWhenNotEpic() {
-        SubTask subTask = new SubTask("SubTask-1", "Описание-1", Status.NEW, 1);
-        SubTask result = taskManager.createSubTask(subTask);
+        SubTask subTask1 = new SubTask("SubTask-1", "Описание-1", Status.NEW, 1);
+        SubTask result = taskManager.createSubTask(subTask1);
         assertNotNull(result, "Нет ЭПИКА,нет ПодЗадачи");
     }
 
@@ -175,7 +181,81 @@ class InMemoryTaskManagerTest {
         assertEquals(subTask3, list.get(2), "SubTask-3 должен быть третьим");
         assertEquals(3, list.size(), "list должен быть = 3");
     }
+
+    @Test
+    void createTasksTimeTest() {
+        Task task = new Task(1, "Task", "Описание-Task", Status.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 7, 7, 15, 15));
+        Epic epic = new Epic("Epic", "Описание-Epic");
+
+        SubTask subTask = new SubTask(3, "SubTask-1", "Описание-SubTask-1", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 0), 2);
+
+        SubTask subTask2 = new SubTask(4, "SubTask-2", "Описание-SubTask-2", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 45), 2);
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubTask(subTask);
+        taskManager.createSubTask(subTask2);
+
+        assertEquals(task, taskManager.getTaskById(task.getId()), "Задача в менеджере не совпадает");
+        assertEquals(subTask, taskManager.getSubTaskById(subTask.getId()),
+                "Подзадача в менеджере не совпадает");
+        assertEquals(epic, taskManager.getEpicById(epic.getId()), "Подзадача в менеджере не совпадает");
+    }
+
+    @Test
+    void checkEpicTimeTest() {
+        Task task = new Task(1, "Task", "Описание-Task", Status.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 7, 7, 15, 15));
+        Epic epic = new Epic("Epic", "Описание-Epic");
+
+        SubTask subTask = new SubTask(3, "SubTask-1", "Описание-SubTask-1", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 0), 2);
+
+        SubTask subTask2 = new SubTask(4, "SubTask-2", "Описание-SubTask-2", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 45), 2);
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubTask(subTask);
+        taskManager.createSubTask(subTask2);
+
+        Duration duration = subTask.getDuration().plus(subTask2.getDuration());
+        assertEquals(duration, taskManager.getEpicById(epic.getId()).getDuration(), "Расчеты не верны");
+        LocalDateTime startTime = subTask.getStartTime();
+        assertEquals(startTime, taskManager.getEpicById(epic.getId()).getStartTime(), "Расчеты не верны");
+        LocalDateTime endTime = subTask2.getEndTime();
+        assertEquals(endTime, taskManager.getEpicById(epic.getId()).getEndTime(), "Расчеты не верны");
+    }
+
+    @Test
+    void getPrioritizedTaskTest() {
+        Task task = new Task(1, "Task", "Описание-Task", Status.NEW,
+                Duration.ofMinutes(15), LocalDateTime.of(2024, 7, 7, 15, 15));
+        Epic epic = new Epic("Epic", "Описание-Epic");
+
+        SubTask subTask = new SubTask(3, "SubTask-1", "Описание-SubTask-1", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 0), 2);
+
+        SubTask subTask2 = new SubTask(4, "SubTask-2", "Описание-SubTask-2", Status.NEW,
+                Duration.ofMinutes(15),
+                LocalDateTime.of(2024, 7, 7, 15, 45), 2);
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubTask(subTask);
+        taskManager.createSubTask(subTask2);
+
+        Task[] tasks = new Task[]{subTask, task, subTask2};
+        assertArrayEquals(taskManager.getPrioritizedTasks().stream().toArray(), tasks,
+                "Задачи по порядку не расставлены");
+    }
 }
+
 
 
 
