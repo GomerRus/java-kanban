@@ -1,6 +1,5 @@
-id,type,name,status,description,duration,startTime,epicId
-1,TASK,Доработать приложение,NEW,Манагер
-2,TASK,Пробежать марафон,NEW,Пушкин-Питер
-3,EPIC,Понедельник,NEW,!!!
-4,SUBTASK,Налоги,NEW,Позвонить бухгалтеру,3
-5,SUBTASK,Нал,NEW,Позвонить ,3
+id,type,name,status,description,startTime,duration,epicId
+1,TASK,Task-1,NEW,Описание-1
+2,EPIC,Epic-1,NEW,Описание-1
+3,SUBTASK,SubTask-1,NEW,Описание-1,2
+4,SUBTASK,SubTask-2,NEW,Описание-2,2

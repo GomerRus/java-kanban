@@ -1,6 +1,5 @@
 package tasks;
 
-import status.Status;
 import status.TypeTasks;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,7 @@ public class Epic extends Task {
     private LocalDateTime endTime;
 
     public Epic(String name, String description) {
-        super(name, description, Status.NEW);
+        super(name, description);
         this.typeTasks = TypeTasks.EPIC;
     }
 

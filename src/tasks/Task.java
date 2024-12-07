@@ -16,6 +16,13 @@ public class Task {
     private Duration duration;
     private LocalDateTime startTime;
 
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+        this.typeTasks = TypeTasks.TASK;
+    }
+
     public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
@@ -129,7 +136,7 @@ public class Task {
     public String toStringCsv() {
         if (startTime != null) {
             return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(),
-                    description, duration.toString(), startTime.toString());
+                    description, startTime.toString(), duration.toString());
         } else {
             return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(),
                     description);

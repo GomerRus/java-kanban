@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 public class FileBackendTaskManager extends InMemoryTaskManager implements TaskManager {
     private Path path = Path.of("src", "saved_information", "savedTasks.csv");
-    private static final String HEAD = "id,type,name,status,description,duration,startTime,epicId";
+    private static final String HEAD = "id,type,name,status,description,startTime,duration,epicId";
 
     public FileBackendTaskManager(Path path) {
         this.path = path;
