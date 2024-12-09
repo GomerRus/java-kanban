@@ -54,6 +54,7 @@ class FileBakendTaskManagerTest {
         FileBackendTaskManager newFb = FileBackendTaskManager.loadFromFile(path);
         assertArrayEquals(fb.getAllTasks().toArray(), newFb.getAllTasks().toArray(), "Таски не равны");
         assertArrayEquals(fb.getAllSubTasks().toArray(), newFb.getAllSubTasks().toArray(), "СабТаски не равны");
+        assertArrayEquals(fb.getAllEpics().toArray(), newFb.getAllEpics().toArray(), "Эпики не равны");
     }
 }
 

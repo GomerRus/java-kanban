@@ -49,7 +49,11 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plus(duration);
+        if (startTime == null) {
+            return null;
+        } else {
+            return startTime.plus(duration);
+        }
     }
 
     public Duration getDuration() {
@@ -139,7 +143,7 @@ public class Task {
                     description, startTime.toString(), duration.toString());
         } else {
             return String.join(",", String.valueOf(id), typeTasks.toString(), name, status.toString(),
-                    description);
+                    description, null, null);
         }
     }
 }
