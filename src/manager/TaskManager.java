@@ -4,9 +4,12 @@ import tasks.Task;
 import tasks.Epic;
 import tasks.SubTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
+
+    List<Task> getPrioritizedTasks();
 
     List<Task> getHistory();
 
@@ -53,7 +56,6 @@ public interface TaskManager {
     void deleteEpicById(int id);
 
     //-------------------показали по Эпику----------------------
-    List<SubTask> getAllSubTaskByEpicId(int id);
-    //----------------------------Обновление статуса Эпика-----------
+    ArrayList<SubTask> getAllSubTaskByEpicId(int id);
 }
 
