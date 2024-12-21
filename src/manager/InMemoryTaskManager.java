@@ -149,6 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         tasks.put(task.getId(), task);
         prioritizedTasks.add(task);
+
     }
 
     @Override

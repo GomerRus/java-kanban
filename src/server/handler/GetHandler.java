@@ -41,25 +41,25 @@ public class GetHandler extends BaseHttpHandler {
                     int id = Integer.parseInt(path[2]);
                     switch (path[1]) {
                         case "tasks":
-                            if (taskManager.getTaskById(Integer.parseInt(path[2])) == null) {
+                            if (taskManager.getTaskById(id) == null) {
                                 sendNotFound(exchange);
                             } else {
-                                sendText(exchange, gson.toJson(taskManager.getTaskById(Integer.parseInt(path[2]))),
+                                sendText(exchange, gson.toJson(taskManager.getTaskById(id)),
                                         200);
                             }
 
                         case "subtasks":
-                            if (taskManager.getSubTaskById(Integer.parseInt(path[2])) == null) {
+                            if (taskManager.getSubTaskById(id) == null) {
                                 sendNotFound(exchange);
                             } else {
-                                sendText(exchange, gson.toJson(taskManager.getSubTaskById(Integer.parseInt(path[2]))),
+                                sendText(exchange, gson.toJson(taskManager.getSubTaskById(id)),
                                         200);
                             }
                         case "epics":
-                            if (taskManager.getEpicById(Integer.parseInt(path[2])) == null) {
+                            if (taskManager.getEpicById(id) == null) {
                                 sendNotFound(exchange);
                             } else {
-                                sendText(exchange, gson.toJson(taskManager.getEpicById(Integer.parseInt(path[2]))),
+                                sendText(exchange, gson.toJson(taskManager.getEpicById(id)),
                                         200);
                             }
                         default:
@@ -74,10 +74,10 @@ public class GetHandler extends BaseHttpHandler {
                 int id = Integer.parseInt(path[2]);
                 switch (path[1]) {
                     case "epics":
-                        if (taskManager.getEpicById(Integer.parseInt(path[2])) == null) {
+                        if (taskManager.getEpicById(id) == null) {
                             sendNotFound(exchange);
                         } else {
-                            sendText(exchange, gson.toJson(taskManager.getAllSubTaskByEpicId(Integer.parseInt(path[2]))),
+                            sendText(exchange, gson.toJson(taskManager.getAllSubTaskByEpicId(id)),
                                     200);
                         }
                     default:

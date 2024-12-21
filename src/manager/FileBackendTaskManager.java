@@ -144,16 +144,10 @@ public class FileBackendTaskManager extends InMemoryTaskManager implements TaskM
     }
 
     @Override
-    public void updateTask(Task task) {
-        super.updateTask(task);
-        save();
-    }
+    public void updateTask(Task task) {}
 
     @Override
-    public void updateSubTask(SubTask subTask) {
-        super.updateSubTask(subTask);
-        save();
-    }
+    public void updateSubTask(SubTask subTask) {}
 
     @Override
     public void updateEpic(Epic epic) {

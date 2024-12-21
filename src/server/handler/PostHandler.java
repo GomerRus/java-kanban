@@ -1,5 +1,7 @@
 package server.handler;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import manager.TaskManager;
 import tasks.Epic;
@@ -7,6 +9,8 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 
 public class PostHandler extends BaseHttpHandler {
 
@@ -16,60 +20,78 @@ public class PostHandler extends BaseHttpHandler {
 
     protected void postHandler(HttpExchange exchange) throws IOException {
         String[] path = exchange.getRequestURI().getPath().split("/");
-
-        switch (path.length) {
-            case 2 -> {
-                try {
-                    String strRequest = exchange.getRequestBody().readAllBytes().toString();
-                    int id = Integer.parseInt(path[2]);
-                    switch (path[1]) {
-                        case "tasks":
-                            if (taskManager.getTaskById(id) == null) {
-                                sendHasInteractions(exchange);
-                            } else {
-                                taskManager.createTask(gson.fromJson(strRequest,
-                                        Task.class));
-                            }
-                        case "subtasks":
-                            if (taskManager.getSubTaskById(id) == null) {
-                                sendHasInteractions(exchange);
-                            } else {
-                                taskManager.createSubTask(gson.fromJson(strRequest,
-                                        SubTask.class));
-                            }
-                        case "epics":
-                            taskManager.createEpic(gson.fromJson(strRequest,
-                                    Epic.class));
-                        default:
-                            sendNotFound(exchange);
-                    }
-                    exchange.sendResponseHeaders(200, 0);
-                    exchange.close();
-                } catch (IllegalArgumentException exp) {
-                    exchange.sendResponseHeaders(400, 0);
-                    exchange.close();
-                }
+        String response;
+        int statusCode;
+        try {
+            String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            JsonElement jsonElement = JsonParser.parseString(body);
+            if (!jsonElement.isJsonObject()) {
+                System.out.println("Ответ от сервера не соответствует ожидаемому.");
+                return;
             }
-            case 3 -> {
-                try {
-                    String strRequest = exchange.getRequestBody().readAllBytes().toString();
 
-                    switch (path[1]) {
-                        case "tasks" -> taskManager.updateTask(gson.fromJson(strRequest,
-                                Task.class));
-                        case "subtasks" -> taskManager.updateSubTask(gson.fromJson(strRequest,
-                                SubTask.class));
-                        case "epics" -> taskManager.updateEpic(gson.fromJson(strRequest,
-                                Epic.class));
-                        default -> sendNotFound(exchange);
+            switch (path[1]) {
+                case "tasks":
+                    Task task = gson.fromJson(jsonElement, Task.class);
+                    if (task.getId() == 0) {
+                        taskManager.createTask(task);
+                        statusCode = 201;
+                        response = String.format("Task успешно создали.Task ID = %s.", task.getId());
+                    } else {
+                        Task updateTask = taskManager.getTaskById(task.getId());
+                        if (updateTask == null) {
+                            statusCode = 404;
+                            response = String.format("Task с ID = %s не найдена", task.getId());
+                        } else {
+                            taskManager.updateTask(updateTask);
+                            statusCode = 201;
+                            response = "Task успешно обновлен";
+                        }
+                        sendText(exchange, response, statusCode);
                     }
-                    exchange.sendResponseHeaders(200, 0);
-                    exchange.close();
-                } catch (NumberFormatException exp) {
-                    exchange.sendResponseHeaders(400, 0);
-                    exchange.close();
-                }
+                case "subtasks":
+                    SubTask subTask = gson.fromJson(jsonElement, SubTask.class);
+                    if (subTask.getId() == 0) {
+                        taskManager.createSubTask(subTask);
+                        statusCode = 201;
+                        response = String.format("SubTask успешно создали.Task ID = %s.", subTask.getId());
+                    } else {
+                        SubTask updateSubTask = taskManager.getSubTaskById(subTask.getId());
+                        if (updateSubTask == null) {
+                            statusCode = 404;
+                            response = String.format("SubTask с ID = %s не найдена", subTask.getId());
+                        } else {
+                            taskManager.updateSubTask(updateSubTask);
+                            statusCode = 201;
+                            response = "SubTask успешно обновлен";
+                        }
+                        sendText(exchange, response, statusCode);
+                    }
+                case "epics":
+                    Epic epic = gson.fromJson(jsonElement, Epic.class);
+                    if (epic.getId() == 0) {
+                        taskManager.createEpic(epic);
+                        statusCode = 201;
+                        response = String.format("Epic  успешно создали.Task ID = %s.", epic.getId());
+                    } else {
+                        Epic updateEpic = taskManager.getEpicById(epic.getId());
+                        if (updateEpic == null) {
+                            statusCode = 404;
+                            response = String.format("Epic с ID = %s не найдена", epic.getId());
+                        } else {
+                            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+                            taskManager.updateEpic(newEpic);
+                            statusCode = 201;
+                            response = "Epic обновлен";
+                        }
+                    }
+                    sendText(exchange, response, statusCode);
+                default:
+                    sendHasInteractions(exchange);
             }
+        } catch (IllegalArgumentException e) {
+            exchange.sendResponseHeaders(400, 0);
+            exchange.close();
         }
     }
 }
